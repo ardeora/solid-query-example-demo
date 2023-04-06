@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.search-bar:focus-within {
+  @apply ring-2 ring-blue-500;
+}
