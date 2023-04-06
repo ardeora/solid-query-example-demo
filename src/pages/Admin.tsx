@@ -41,58 +41,12 @@ export const Admin = () => {
       );
       return response as IUser[];
     },
-    select(data) {
-      return data.map((user) => ({
-        value: String(user.id),
-        label: `${user.firstName} ${user.lastName}`,
-      }));
-    },
   }));
-
-  const userDetailsQuery = createQuery(() => ({
-    queryKey: ["user_details", selectedUser()],
-    queryFn: async () => {
-      const response = await fetch(
-        `${API_URL}/user_details/${selectedUser()}`
-      ).then((res) => res.json());
-      return response as IUserDetails;
-    },
-    enabled: selectedUser() !== undefined,
-  }));
-
-  const updateUserMutation = createMutation(() => ({
-    mutationFn: async (val: { id: string; status: string }) => {
-      await sleep(1000);
-      const response = await fetch(`${API_URL}/users/update`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: Number(val.id),
-          status: val.status,
-        }),
-      }).then((res) => res.json());
-      return response as { message: string };
-    },
-    onSuccess: (data) => {
-      toast.success(data.message);
-    },
-  }));
-
-  createEffect(() => {
-    if (selectedUser() && userDetailsQuery.data) {
-      setSelectedStatus(userDetailsQuery.data.status);
-    }
-  });
 
   const handleSubmit = (e: Event) => {
     e.preventDefault();
     const user = selectedUser();
     const status = selectedStatus();
-    if (user && status) {
-      updateUserMutation.mutate({ id: user, status });
-    }
   };
 
   return (
@@ -108,7 +62,12 @@ export const Admin = () => {
             <div class="flex flex-col">
               <label class="pb-1">Select User</label>
               <SelectComponent
-                options={usersQuery.data}
+                options={[
+                  { label: "Apple", value: "apple" },
+                  { label: "Banana", value: "banana" },
+                  { label: "Orange", value: "orange" },
+                  { label: "Strawberry", value: "strawberry" },
+                ]}
                 value={selectedUser()}
                 onValueChange={setSelectedUser}
                 placeholder="Select a user"
@@ -129,7 +88,7 @@ export const Admin = () => {
               disabled={!Boolean(selectedUser() && selectedStatus())}
               class="bg-blue-500 px-5 py-2 disabled:opacity-75 text-blue-50 hover:bg-blue-600 shadow-blue-500 rounded-md"
             >
-              {updateUserMutation.isPending ? "Saving" : "Update"}
+              Update
             </button>
           </div>
         </form>
@@ -137,6 +96,37 @@ export const Admin = () => {
     </div>
   );
 };
+
+// const userDetailsQuery = createQuery(() => ({
+//   queryKey: ["user_details", selectedUser()],
+//   queryFn: async () => {
+//     const response = await fetch(
+//       `${API_URL}/user_details/${selectedUser()}`
+//     ).then((res) => res.json());
+//     return response as IUserDetails;
+//   },
+//   enabled: selectedUser() !== undefined,
+// }));
+
+// const updateUserMutation = createMutation(() => ({
+//   mutationFn: async (val: { id: string; status: string }) => {
+//     await sleep(1000);
+//     const response = await fetch(`${API_URL}/users/update`, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({
+//         id: Number(val.id),
+//         status: val.status,
+//       }),
+//     }).then((res) => res.json());
+//     return response as { message: string };
+//   },
+//   onSuccess: (data) => {
+//     toast.success(data.message);
+//   },
+// }));
 
 interface SelectComponentProps {
   options: SelectableValue[] | undefined;
@@ -213,19 +203,22 @@ const Banner: Component<{ user: string | undefined }> = (props) => {
   const userQuery = createQuery(() => ({
     queryKey: ["users", props.user],
     queryFn: async () => {
-      const response = await fetch(`${API_URL}/users/${props.user}`).then(
-        (res) => res.json()
-      );
-      return response as IUser;
+      const response = await fetch(`${API_URL}/users/${props.user}`);
+      if (!response.ok) {
+        throw new Error("No User Found");
+      }
+      const user = await response.json();
+      return user as IUser;
     },
     enabled: props.user !== undefined,
+    retry: 0,
   }));
 
   return (
     <section class="relative">
       <div class="relative h-36 bg-gray-200 overflow-hidden">
         <div class="relative w-[120%] h-56 left-1/2 -translate-x-1/2">
-          <Show when={userQuery.data}>
+          <Show when={userQuery.status === "success"}>
             <div class="relative w-[120%] h-56 left-1/2 -translate-x-1/2">
               <img
                 class="absolute h-full w-full object-cover opacity-70"
@@ -239,7 +232,7 @@ const Banner: Component<{ user: string | undefined }> = (props) => {
         </div>
       </div>
       <div class="absolute bg-gray-300 h-24 w-24 bottom-[5%] left-1/2 translate-y-1/2 -translate-x-1/2 rounded-full overflow-hidden border-4 shadow-lg border-white">
-        <Show when={userQuery.data}>
+        <Show when={userQuery.status === "success"}>
           <img
             class="absolute h-full w-full object-cover"
             src={`https://source.boringavatars.com/marble/120/${

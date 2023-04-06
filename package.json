@@ -10,6 +10,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@types/prismjs": "^1.26.0",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.3.1",
@@ -22,7 +23,9 @@
     "@kobalte/core": "^0.8.2",
     "@solid-primitives/keyed": "^1.1.10",
     "@solidjs/router": "^0.8.2",
+    "@srsholmes/solid-code-input": "^0.0.18",
     "@tanstack/solid-query": "5.0.0-alpha.16",
+    "prismjs": "^1.29.0",
     "solid-js": "^1.6.10",
     "solid-toast": "^0.5.0"
   }
