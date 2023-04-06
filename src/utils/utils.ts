@@ -1,4 +1,5 @@
-export const API_URL = "http://localhost:3333";
+export const API_URL =
+  "https://expressjs-mongoose-production-a94b.up.railway.app";
 
 export const sleep = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
