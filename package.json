@@ -19,9 +19,11 @@
   },
   "dependencies": {
     "@adeora/solid-query-devtools": "^0.0.7",
+    "@kobalte/core": "^0.8.2",
     "@solid-primitives/keyed": "^1.1.10",
     "@solidjs/router": "^0.8.2",
     "@tanstack/solid-query": "5.0.0-alpha.16",
-    "solid-js": "^1.6.10"
+    "solid-js": "^1.6.10",
+    "solid-toast": "^0.5.0"
   }
 }

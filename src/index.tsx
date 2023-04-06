@@ -10,6 +10,8 @@ import { SolidQueryDevtools } from "@adeora/solid-query-devtools";
 import { Query } from "./pages/Query";
 import { UserProfile } from "./components/UserProfile";
 import { EmptyProfile } from "./components/EmptyProfile";
+import { Admin } from "./pages/Admin";
+import { Toaster } from "solid-toast";
 
 const root = document.getElementById("root");
 
@@ -23,6 +25,7 @@ const App = () => {
   return (
     <QueryClientProvider client={new QueryClient()}>
       <SolidQueryDevtools />
+      <Toaster />
       <Router>
         <Routes>
           <Route path="/" element={<PageLayout />}>
@@ -31,6 +34,7 @@ const App = () => {
               <Route path="/" element={<EmptyProfile />}></Route>
               <Route path="/:id" element={<UserProfile />}></Route>
             </Route>
+            <Route path="/admin" element={<Admin />}></Route>
           </Route>
         </Routes>
       </Router>

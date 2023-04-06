@@ -17,7 +17,6 @@ export const Query = () => {
       },
     ],
     queryFn: async () => {
-      await sleep(500);
       const response = await fetch(`${API_URL}/users?search=${search()}`).then(
         (res) => res.json()
       );

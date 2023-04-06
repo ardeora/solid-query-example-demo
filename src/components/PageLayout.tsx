@@ -9,12 +9,15 @@ export const PageLayout = () => {
           <span class="font-medium text-[#58595B]">+</span>
           <span class="font-bold text-[#58595B]">TANSTACK Query</span>
         </A>
-        <nav class="font-medium text-gray-600 flex items-center gap-2">
+        <nav class="font-medium text-gray-600 flex items-center gap-4">
           <A class="hover:underline" href="/">
             Home
           </A>
           <A class="hover:underline" href="query">
             Query
+          </A>
+          <A class="hover:underline" href="admin">
+            Admin
           </A>
         </nav>
       </header>

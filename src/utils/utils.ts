@@ -3,6 +3,20 @@ export const API_URL = "http://localhost:3333";
 export const sleep = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
+export const convertDateToString = (timestamp: number) => {
+  const date = new Date(timestamp);
+  const options = { month: "long", day: "numeric", year: "numeric" };
+  // @ts-ignore
+  return date.toLocaleDateString("en-US", options);
+};
+
+export const statusOptions = [
+  { value: "subscribed", label: "Subscribed" },
+  { value: "active", label: "Active" },
+  { value: "inactive", label: "Inactive" },
+  { value: "deactivated", label: "Deactivated" },
+];
+
 export interface IUser {
   id: number;
   firstName: string;
@@ -29,7 +43,15 @@ export interface IUser {
   };
 }
 
+export interface IPost {
+  title: string;
+  summary: string;
+  createdAt: number;
+}
+
 export interface IUserDetails {
   id: number;
   description: string;
+  status: "subscribed" | "active" | "inactive" | "deactivated";
+  posts: IPost[];
 }
