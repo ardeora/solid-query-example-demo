@@ -222,19 +222,6 @@ const Banner: Component<{ user: string | undefined }> = (props) => {
 
   return (
     <section class="relative">
-      <div class="fixed inset-0  -z-10">
-        <Show when={userQuery.data}>
-          <div class="absolute w-[150%] h-[150%]">
-            <img
-              class="absolute h-full w-full object-cover opacity-70"
-              src={`https://source.boringavatars.com/marble/120/${
-                userQuery.data!.username
-              }?colors=541e35,df5d2e,ffb43e,a4c972,6bb38e`}
-              alt="User cover"
-            />
-          </div>
-        </Show>
-      </div>
       <div class="relative h-36 bg-gray-200 overflow-hidden">
         <div class="relative w-[120%] h-56 left-1/2 -translate-x-1/2">
           <Show when={userQuery.data}>
